@@ -1,0 +1,28 @@
+<div class="container">
+  <h2>Criar Documento</h2>
+
+  <form [formGroup]="documentForm" (ngSubmit)="onSubmit()">
+
+    <mat-form-field appearance="fill">
+      <mat-label>Nome do Documento</mat-label>
+      <input matInput formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Nome do Signatário</mat-label>
+      <input matInput formControlName="signerName">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Email do Signatário</mat-label>
+      <input matInput formControlName="signerEmail">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>URL do Arquivo PDF</mat-label>
+      <input matInput formControlName="pdfUrl">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Criar Documento</button>
+  </form>
+</div>
