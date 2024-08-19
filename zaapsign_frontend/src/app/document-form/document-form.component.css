@@ -1,0 +1,62 @@
+/* Estilos gerais para o container do formulário */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Garante que o conteúdo ocupe a altura total da tela */
+  padding: 20px;
+}
+
+/* Estilos para o formulário */
+form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 500px;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para o título do formulário */
+h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Estilos para os campos do formulário */
+.form-field {
+  display: block;
+  margin-bottom: 16px;
+}
+
+/* Estilos para o botão de submit */
+.button-container {
+  text-align: center;
+}
+
+button[mat-raised-button] {
+  margin-top: 20px;
+}
+
+/* Estilos para a mensagem de erro */
+.error-message {
+  color: red;
+  margin-top: 16px;
+}
+
+/* Ajuste para evitar que a label seja cortada (se necessário) */
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  min-height: 3em;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-label {
+  line-height: 1.5;
+}
+
+
+mat-label {
+  font-size: 8px;
+}

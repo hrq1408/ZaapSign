@@ -14,7 +14,7 @@ from pathlib import Path
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+s
 
 SECRET_KEY = 'django-insecure-7g@tsid&=^4cz6i$gur@xi'
 
@@ -91,10 +91,10 @@ CORS_ALLOW_HEADERS = [
 
 WSGI_APPLICATION = 'zaapsign_backend.wsgi.application'
 
-ZAPSIGN_ORG_TOKEN = 'ec68d93f-ea4b-4fb7-8098-a5a83a856fe9'
-ZAPSIGN_USERNAME = 'hrq1408@gmail.com'
-ZAPSIGN_PASSWORD  = '241726Hrq1!@',
-ZAPSIGN_API_TOKEN = 'ec68d93f-ea4b-4fb7-8098-a5a83a856fe9'
+
+ZAPSIGN_USERNAME = 'inserir E-mail'
+ZAPSIGN_PASSWORD  = 'inserir senha',
+ZAPSIGN_API_TOKEN = 'inserir token'
 
 DATABASES = {
     'default': {
