@@ -80,9 +80,9 @@ CORS_ALLOW_HEADERS = [
 WSGI_APPLICATION = 'zaapsign_backend.wsgi.application'
 
 
-ZAPSIGN_USERNAME = 'hrq1408@gmail.com'
-ZAPSIGN_PASSWORD  = '241726Hrq1!@'
-ZAPSIGN_API_TOKEN = 'ec68d93f-ea4b-4fb7-8098-a5a83a856fe9'
+ZAPSIGN_USERNAME = 'username_aqui'
+ZAPSIGN_PASSWORD  = 'senha_aqui'
+ZAPSIGN_API_TOKEN = 'token_aqui'
 ZAPSIGN_JWT_TOKEN = None  
 
 
