@@ -75,6 +75,3 @@ O frontend é implementado em Angular, utilizando componentes standalone para um
 
 O backend obtém um token JWT da ZapSign para autenticar as requisições. A criação de documentos é feita através de requisições autenticadas ao endpoint `/api/v1/docs/` da API ZapSign.
 
-### Considerações Finais
-
-Este projeto demonstra a integração entre Django, Angular e a API ZapSign. Lembre-se de proteger suas credenciais da ZapSign usando variáveis de ambiente e revise as configurações de segurança antes de implantar em produção. Este guia é um ponto de partida; você precisará implementar a lógica completa de integração, incluindo tratamento de erros e validação de dados.
