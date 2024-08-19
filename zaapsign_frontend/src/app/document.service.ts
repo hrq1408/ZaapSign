@@ -2,15 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-// Interface para representar um documento
 interface Document {
-  id: number; // Ou outro tipo de identificador, se aplicável
+  id: number;
   name: string;
   status: string;
   signerName: string;
   signerEmail: string;
   pdfUrl: string;
-  // Outros campos conforme necessário
+
 }
 
 @Injectable({
@@ -26,8 +25,13 @@ export class DocumentService {
   }
 
   createDocument(documentData: any): Observable<Document> {
-    return this.http.post<Document>(this.apiUrl, documentData);
+    return this.http.post<Document>(this.apiUrl, documentData, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
   }
+
 
   updateDocument(id: number, documentData: any): Observable<Document> {
     return this.http.put<Document>(`${this.apiUrl}${id}/`, documentData);

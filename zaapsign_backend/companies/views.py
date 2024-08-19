@@ -3,6 +3,8 @@ import requests
 from django.conf import settings
 from rest_framework.exceptions import APIException
 from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
 class CreateDocumentView(APIView):
 
@@ -12,7 +14,6 @@ class CreateDocumentView(APIView):
         if jwt_token:
             print("JWT token já existente:", jwt_token)
             return jwt_token
-
         
         auth_url = "https://api.zapsign.com.br/api/v1/auth/token/"
         auth_data = {
@@ -23,13 +24,13 @@ class CreateDocumentView(APIView):
         print("Resposta da autenticação:", auth_response.status_code, auth_response.text)
 
         if auth_response.status_code != 200:
-            raise APIException(f"Failed to authenticate with ZapSign. Status code: {auth_response.status_code}, Response: {auth_response.text}")
+            raise APIException(f"Falha na autenticação com a ZapSign. Código de status: {auth_response.status_code}, Resposta: {auth_response.text}")
 
         auth_response_data = auth_response.json()
         jwt_token = auth_response_data.get("access")
         print("Novo JWT token:", jwt_token)
 
-        
+        # Armazenar o token JWT
         settings.ZAPSIGN_JWT_TOKEN = jwt_token
 
         return jwt_token
@@ -37,10 +38,8 @@ class CreateDocumentView(APIView):
     def perform_create(self, serializer):
         document = serializer.save()
 
-        
         jwt_token = self.get_jwt_token()
 
-        
         zap_sign_api_url = "https://sandbox.api.zapsign.com.br/api/v1/docs/"
         document_data = {
             "api_token": settings.ZAPSIGN_API_TOKEN,
@@ -60,15 +59,19 @@ class CreateDocumentView(APIView):
             )
             response.raise_for_status()
         except requests.exceptions.HTTPError as http_err:
-            raise APIException(f"HTTP error occurred: {http_err}, Response: {response.text}")
+            raise APIException(f"Ocorreu um erro HTTP: {http_err}, Resposta: {response.text}")
         except Exception as err:
-            raise APIException(f"Other error occurred: {err}")
+            raise APIException(f"Outro erro ocorreu: {err}")
 
         if response.status_code == 201:
             document.zapsign_id = response.json().get("id")
             document.save()
         else:
-            raise APIException(f"Failed to create document in ZapSign. Status code: {response.status_code}, Response: {response.text}")
+            raise APIException(f"Falha ao criar documento na ZapSign. Código de status: {response.status_code}, Resposta: {response.text}")
 
     def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
