@@ -63,7 +63,7 @@ O frontend é implementado em Angular, utilizando componentes standalone para um
 
 ### Execução do Projeto
 
-- **Backend:** Use o comando `python manage.py runserver`. O backend estará disponível em [http://localhost:8000](http://localhost:8000).
+- **Backend:** Use o comando `docker-compose up backend`. O backend estará disponível em [http://localhost:8000](http://localhost:8000).
 - **Frontend:** Use o comando `ng serve` e acesse o frontend em [http://localhost:4200](http://localhost:4200).
 
 ### Testes
