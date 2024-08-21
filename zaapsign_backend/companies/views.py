@@ -1,77 +1,15 @@
-import json
-import requests
-from django.conf import settings
-from rest_framework.exceptions import APIException
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import viewsets
+from .models import Company, Document, Signer  # Importe os modelos necessários
+from .serializers import CompanySerializer, DocumentSerializer, SignerSerializer  # Importe os serializadores necessários
 
-class CreateDocumentView(APIView):
+class CompanyViewSet(viewsets.ModelViewSet):
+    queryset = Company.objects.all()
+    serializer_class = CompanySerializer
 
-    def get_jwt_token(self):
-        """Obtém o token JWT, armazenando-o em uma variável de ambiente ou cache."""
-        jwt_token = getattr(settings, "ZAPSIGN_JWT_TOKEN", None)
-        if jwt_token:
-            print("JWT token já existente:", jwt_token)
-            return jwt_token
-        
-        auth_url = "https://api.zapsign.com.br/api/v1/auth/token/"
-        auth_data = {
-            "username": settings.ZAPSIGN_USERNAME,
-            "password": settings.ZAPSIGN_PASSWORD
-        }
-        auth_response = requests.post(auth_url, json=auth_data)
-        print("Resposta da autenticação:", auth_response.status_code, auth_response.text)
+class DocumentViewSet(viewsets.ModelViewSet):
+    queryset = Document.objects.all()
+    serializer_class = DocumentSerializer
 
-        if auth_response.status_code != 200:
-            raise APIException(f"Falha na autenticação com a ZapSign. Código de status: {auth_response.status_code}, Resposta: {auth_response.text}")
-
-        auth_response_data = auth_response.json()
-        jwt_token = auth_response_data.get("access")
-        print("Novo JWT token:", jwt_token)
-
-        # Armazenar o token JWT
-        settings.ZAPSIGN_JWT_TOKEN = jwt_token
-
-        return jwt_token
-
-    def perform_create(self, serializer):
-        document = serializer.save()
-
-        jwt_token = self.get_jwt_token()
-
-        zap_sign_api_url = "https://sandbox.api.zapsign.com.br/api/v1/docs/"
-        document_data = {
-            "api_token": settings.ZAPSIGN_API_TOKEN,
-            "name": document.name,
-            "lang": "pt-br",
-            "file_url": document.file_url
-        }
-
-        try:
-            response = requests.post(
-                zap_sign_api_url,
-                headers={
-                    'Authorization': f'Bearer {jwt_token}',
-                    'Content-Type': 'application/json'
-                },
-                data=json.dumps(document_data)
-            )
-            response.raise_for_status()
-        except requests.exceptions.HTTPError as http_err:
-            raise APIException(f"Ocorreu um erro HTTP: {http_err}, Resposta: {response.text}")
-        except Exception as err:
-            raise APIException(f"Outro erro ocorreu: {err}")
-
-        if response.status_code == 201:
-            document.zapsign_id = response.json().get("id")
-            document.save()
-        else:
-            raise APIException(f"Falha ao criar documento na ZapSign. Código de status: {response.status_code}, Resposta: {response.text}")
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+class SignerViewSet(viewsets.ModelViewSet):
+    queryset = Signer.objects.all()
+    serializer_class = SignerSerializer

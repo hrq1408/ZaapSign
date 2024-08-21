@@ -1,18 +1,17 @@
 from pathlib import Path
+import os
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 SECRET_KEY = 'django-insecure-7g@tsid&=^4cz6i$gur@xi'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
-
-
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -23,7 +22,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'corsheaders',
-    'companies'
+    'companies',
+    'documents',
 ]
 
 MIDDLEWARE = [
@@ -80,10 +80,10 @@ CORS_ALLOW_HEADERS = [
 WSGI_APPLICATION = 'zaapsign_backend.wsgi.application'
 
 
-ZAPSIGN_USERNAME = 'username_aqui'
-ZAPSIGN_PASSWORD  = 'senha_aqui'
-ZAPSIGN_API_TOKEN = 'token_aqui'
-ZAPSIGN_JWT_TOKEN = None  
+ZAPSIGN_USERNAME = 'hrq1408@gmail.com'
+ZAPSIGN_PASSWORD  = '241726Hrq1!@'
+ZAPSIGN_API_TOKEN = '81abaa40-8db0-4b96-9d15-637c0f505ad652266ec5-23f9-4905-8aa7-d6c2ee0c42cb'
+ZAPSIGN_JWT_TOKEN = None
 
 
 DATABASES = {
@@ -94,8 +94,43 @@ DATABASES = {
         'PASSWORD': 'admin',
         'HOST': 'db',
         'PORT': '5432',
+        'OPTIONS': {
+            'client_encoding': 'UTF8',
+        },
     }
 }
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+        },
+        'companies': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+LANGUAGE_CODE = 'pt_BR'
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale'),
+]
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
