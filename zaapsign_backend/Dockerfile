@@ -7,7 +7,6 @@ ENV LANG C.UTF-8
 WORKDIR /app
 
 COPY requirements.txt /app/
-
 RUN apt-get update && \
     apt-get install -y netcat-openbsd && \
     apt-get clean && \
@@ -17,9 +16,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /app/
 
-COPY entrypoint.sh /app/
-RUN chmod +x /app/entrypoint.sh
-
-ENTRYPOINT ["/app/entrypoint.sh"]
-
 EXPOSE 8000
+
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "zaapsign_backend.wsgi:application"]
